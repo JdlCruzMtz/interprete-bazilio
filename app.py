@@ -40,6 +40,13 @@ def descargar_pdf():
         return send_file(ruta_pdf, as_attachment=True)
     else:
         return "Partitura no generada", 404
+@app.after_request
+def add_header(response):
+    # Esto fuerza al navegador a nunca guardar en caché las respuestas del servidor
+    response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, post-check=0, pre-check=0, max-age=0'
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = '-1'
+    return response
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
