@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Intérprete Bazilio</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #222; color: #fff; padding: 40px; max-width: 600px; margin: auto; }
+        textarea { width: 100%; padding: 10px; font-size: 16px; margin-bottom: 15px; border-radius: 5px; }
+        button { background-color: #4CAF50; color: white; padding: 12px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; width: 100%; }
+        button:hover { background-color: #45a049; }
+        audio { width: 100%; margin-top: 20px; }
+        #estado { color: #aaa; margin-top: 10px; font-style: italic; }
+    </style>
+</head>
+<body>
+
+    <h1>Intérprete Bazilio</h1>
+    <p>Ingresa la secuencia de notas separadas por espacios (ej. A5 E5 C5 A4):</p>
+    
+    <textarea id="notas" rows="4" placeholder="Ejemplo: E E F G G F E D C C D E E D D"></textarea>
+    <button onclick="procesarMusica()">Convertir a Audio</button>
+    
+    <p id="estado"></p>
+    <audio id="reproductor" controls style="display: none;"></audio>
+
+    <!-- Botón de descarga con guion bajo -->
+    <a id="btnPdf" href="/descargar_pdf" style="display: none; margin-top: 15px; text-decoration: none;">
+        <button style="background-color: #2196F3;">Descargar Partitura en PDF</button>
+    </a>
+
+    <script>
+        async function procesarMusica() {
+            const notas = document.getElementById('notas').value;
+            const estado = document.getElementById('estado');
+            const reproductor = document.getElementById('reproductor');
+            const btnPdf = document.getElementById('btnPdf'); // Referencia al botón
+            
+            if (!notas) { alert("Ingresa algunas notas primero"); return; }
+
+            estado.innerText = "Generando partitura y compilando MP3...";
+            reproductor.style.display = "none";
+            btnPdf.style.display = "none";
+
+            try {
+                const respuesta = await fetch('/generar', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: 'notas=' + encodeURIComponent(notas)
+                });
+
+                if (respuesta.ok) {
+                    const blob = await respuesta.blob();
+                    const audioUrl = URL.createObjectURL(blob);
+                    
+                    reproductor.src = audioUrl;
+                    reproductor.style.display = "block";
+                    reproductor.play();
+                    
+                    // Muestra el botón cuando la compilación es exitosa
+                    btnPdf.style.display = "block"; 
+                    estado.innerText = "¡Audio y partitura generados con éxito!";
+                } else {
+                    estado.innerText = "Error en la compilación.";
+                }
+            } catch (error) {
+                estado.innerText = "Error de conexión con el servidor.";
+            }
+        }
+    </script>
+</body>
+</html>
