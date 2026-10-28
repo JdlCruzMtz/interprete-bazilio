@@ -1,4 +1,5 @@
 import os
+import time # <-- 1. Importamos la librería time
 import subprocess
 from flask import Flask, render_template, request, send_file
 
@@ -6,7 +7,8 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    # 2. Pasamos el tiempo actual como variable "t" a la plantilla HTML
+    return render_template('index.html', t=time.time())
 
 @app.route('/generar', methods=['POST'])
 def generar():

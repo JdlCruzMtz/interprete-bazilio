@@ -33,7 +33,7 @@
             const notas = document.getElementById('notas').value;
             const estado = document.getElementById('estado');
             const reproductor = document.getElementById('reproductor');
-            const btnPdf = document.getElementById('btnPdf'); // Referencia al botón
+            const btnPdf = document.getElementById('btnPdf'); 
             
             if (!notas) { alert("Ingresa algunas notas primero"); return; }
 
@@ -41,8 +41,12 @@
             reproductor.style.display = "none";
             btnPdf.style.display = "none";
 
+            // GENERAMOS EL NÚMERO ÚNICO PARA ENGAÑAR AL NAVEGADOR DEL CELULAR
+            const tiempoUnico = Date.now();
+
             try {
-                const respuesta = await fetch('/generar', {
+                // Le pegamos el número único a la petición al servidor
+                const respuesta = await fetch('/generar?v=' + tiempoUnico, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     body: 'notas=' + encodeURIComponent(notas)
@@ -56,7 +60,8 @@
                     reproductor.style.display = "block";
                     reproductor.play();
                     
-                    // Muestra el botón cuando la compilación es exitosa
+                    // Le pegamos el número único al enlace del PDF
+                    btnPdf.href = '/descargar_pdf?v=' + tiempoUnico;
                     btnPdf.style.display = "block"; 
                     estado.innerText = "¡Audio y partitura generados con éxito!";
                 } else {
