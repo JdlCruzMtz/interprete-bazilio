@@ -323,4 +323,9 @@ def principal(argv):
 
 if __name__ == "__main__":
     sys.setrecursionlimit(200000)
-    threading.stack_size(512 * 10
+    threading.stack_size(512 * 1024 * 1024)
+    resultado = []
+    hilo = threading.Thread(target=lambda: resultado.append(principal(sys.argv)))
+    hilo.start()
+    hilo.join()
+    sys.exit(resultado[0] if resultado else 1)
