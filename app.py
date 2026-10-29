@@ -20,6 +20,13 @@ def generar():
     
     ruta_bzl = 'programas/web_temp.bzl'
     ruta_mp3 = 'programas/web_temp.mp3'
+    ruta_pdf = 'programas/web_temp.pdf'
+    
+    # NUEVO: Borrar los archivos viejos si existen para evitar canciones "fantasma"
+    if os.path.exists(ruta_mp3):
+        os.remove(ruta_mp3)
+    if os.path.exists(ruta_pdf):
+        os.remove(ruta_pdf)
     
     # 3. Guardar el archivo temporal
     with open(ruta_bzl, 'w', encoding='utf-8') as f:
@@ -32,7 +39,8 @@ def generar():
     if os.path.exists(ruta_mp3):
         return send_file(ruta_mp3, mimetype='audio/mpeg')
     else:
-        return "Error al compilar el audio", 500
+        # Si llega aquí, significa que la nube falló al crear la música
+        return "Error al compilar el audio en el servidor", 500
 
 @app.route('/descargar_pdf')
 def descargar_pdf():
