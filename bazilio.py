@@ -67,17 +67,20 @@ def generar_salida(partitura, base, solo_ly=False, aviso=print):
             return False
         r = subprocess.run(cmd, capture_output=True, text=True)
         if r.returncode != 0:
-            # CORRECCIÓN: Quitamos el límite de 400 caracteres para ver errores completos
             detalle = r.stderr.strip()
             aviso(f"Aviso: falló {cmd[0]} al generar {descripcion}:\n{detalle}")
             return False
         return True
 
+    # AQUÍ ESTÁ EL CAMBIO: Convertimos a rutas absolutas
+    base_abs = os.path.abspath(base)
+    ruta_ly_abs = os.path.abspath(ruta_ly)
+
     pasos = [
-        (["lilypond", "-o", base, ruta_ly], "el PDF y el MIDI", [".pdf", ".midi"]),
-        (["timidity", "-Ow", "-o", base + ".wav", base + ".midi"], "el WAV", [".wav"]),
-        (["ffmpeg", "-y", "-loglevel", "error", "-i", base + ".wav",
-          "-codec:a", "libmp3lame", "-qscale:a", "2", base + ".mp3"],
+        (["lilypond", "-o", base_abs, ruta_ly_abs], "el PDF y el MIDI", [".pdf", ".midi"]),
+        (["timidity", "-Ow", "-o", base_abs + ".wav", base_abs + ".midi"], "el WAV", [".wav"]),
+        (["ffmpeg", "-y", "-loglevel", "error", "-i", base_abs + ".wav",
+          "-codec:a", "libmp3lame", "-qscale:a", "2", base_abs + ".mp3"],
          "el MP3", [".mp3"]),
     ]
     for cmd, descripcion, extensiones in pasos:
