@@ -155,14 +155,6 @@ class BazilioParser ( Parser ):
         def getRuleIndex(self):
             return BazilioParser.RULE_programa
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterPrograma" ):
-                listener.enterPrograma(self)
-
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitPrograma" ):
-                listener.exitPrograma(self)
-
         def accept(self, visitor:ParseTreeVisitor):
             if hasattr( visitor, "visitPrograma" ):
                 return visitor.visitPrograma(self)
@@ -225,14 +217,6 @@ class BazilioParser ( Parser ):
         def getRuleIndex(self):
             return BazilioParser.RULE_procedimiento
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterProcedimiento" ):
-                listener.enterProcedimiento(self)
-
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitProcedimiento" ):
-                listener.exitProcedimiento(self)
-
         def accept(self, visitor:ParseTreeVisitor):
             if hasattr( visitor, "visitProcedimiento" ):
                 return visitor.visitProcedimiento(self)
@@ -294,14 +278,6 @@ class BazilioParser ( Parser ):
 
         def getRuleIndex(self):
             return BazilioParser.RULE_bloque
-
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterBloque" ):
-                listener.enterBloque(self)
-
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitBloque" ):
-                listener.exitBloque(self)
 
         def accept(self, visitor:ParseTreeVisitor):
             if hasattr( visitor, "visitBloque" ):
@@ -374,14 +350,6 @@ class BazilioParser ( Parser ):
             return self.getTypedRuleContext(BazilioParser.BloqueContext,0)
 
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterIteracion" ):
-                listener.enterIteracion(self)
-
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitIteracion" ):
-                listener.exitIteracion(self)
-
         def accept(self, visitor:ParseTreeVisitor):
             if hasattr( visitor, "visitIteracion" ):
                 return visitor.visitIteracion(self)
@@ -403,14 +371,6 @@ class BazilioParser ( Parser ):
             return self.getTypedRuleContext(BazilioParser.ExprContext,0)
 
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterAsignacion" ):
-                listener.enterAsignacion(self)
-
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitAsignacion" ):
-                listener.exitAsignacion(self)
-
         def accept(self, visitor:ParseTreeVisitor):
             if hasattr( visitor, "visitAsignacion" ):
                 return visitor.visitAsignacion(self)
@@ -431,14 +391,6 @@ class BazilioParser ( Parser ):
         def expr(self):
             return self.getTypedRuleContext(BazilioParser.ExprContext,0)
 
-
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterCorte" ):
-                listener.enterCorte(self)
-
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitCorte" ):
-                listener.exitCorte(self)
 
         def accept(self, visitor:ParseTreeVisitor):
             if hasattr( visitor, "visitCorte" ):
@@ -467,14 +419,6 @@ class BazilioParser ( Parser ):
                 return self.getTypedRuleContext(BazilioParser.ExprContext,i)
 
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterEscritura" ):
-                listener.enterEscritura(self)
-
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitEscritura" ):
-                listener.exitEscritura(self)
-
         def accept(self, visitor:ParseTreeVisitor):
             if hasattr( visitor, "visitEscritura" ):
                 return visitor.visitEscritura(self)
@@ -492,14 +436,6 @@ class BazilioParser ( Parser ):
             return self.getToken(BazilioParser.LEE, 0)
         def VAR(self):
             return self.getToken(BazilioParser.VAR, 0)
-
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterLectura" ):
-                listener.enterLectura(self)
-
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitLectura" ):
-                listener.exitLectura(self)
 
         def accept(self, visitor:ParseTreeVisitor):
             if hasattr( visitor, "visitLectura" ):
@@ -522,14 +458,6 @@ class BazilioParser ( Parser ):
             return self.getTypedRuleContext(BazilioParser.ExprContext,0)
 
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterAgregado" ):
-                listener.enterAgregado(self)
-
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitAgregado" ):
-                listener.exitAgregado(self)
-
         def accept(self, visitor:ParseTreeVisitor):
             if hasattr( visitor, "visitAgregado" ):
                 return visitor.visitAgregado(self)
@@ -548,14 +476,6 @@ class BazilioParser ( Parser ):
         def expr(self):
             return self.getTypedRuleContext(BazilioParser.ExprContext,0)
 
-
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterReproduccion" ):
-                listener.enterReproduccion(self)
-
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitReproduccion" ):
-                listener.exitReproduccion(self)
 
         def accept(self, visitor:ParseTreeVisitor):
             if hasattr( visitor, "visitReproduccion" ):
@@ -578,14 +498,6 @@ class BazilioParser ( Parser ):
             else:
                 return self.getTypedRuleContext(BazilioParser.ExprContext,i)
 
-
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterInvocacion" ):
-                listener.enterInvocacion(self)
-
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitInvocacion" ):
-                listener.exitInvocacion(self)
 
         def accept(self, visitor:ParseTreeVisitor):
             if hasattr( visitor, "visitInvocacion" ):
@@ -613,14 +525,6 @@ class BazilioParser ( Parser ):
 
         def SINO(self):
             return self.getToken(BazilioParser.SINO, 0)
-
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterCondicional" ):
-                listener.enterCondicional(self)
-
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitCondicional" ):
-                listener.exitCondicional(self)
 
         def accept(self, visitor:ParseTreeVisitor):
             if hasattr( visitor, "visitCondicional" ):
@@ -813,14 +717,6 @@ class BazilioParser ( Parser ):
                 return self.getTypedRuleContext(BazilioParser.ExprContext,i)
 
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterIndice" ):
-                listener.enterIndice(self)
-
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitIndice" ):
-                listener.exitIndice(self)
-
         def accept(self, visitor:ParseTreeVisitor):
             if hasattr( visitor, "visitIndice" ):
                 return visitor.visitIndice(self)
@@ -841,14 +737,6 @@ class BazilioParser ( Parser ):
                 return self.getTypedRuleContext(BazilioParser.ExprContext,i)
 
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterLista" ):
-                listener.enterLista(self)
-
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitLista" ):
-                listener.exitLista(self)
-
         def accept(self, visitor:ParseTreeVisitor):
             if hasattr( visitor, "visitLista" ):
                 return visitor.visitLista(self)
@@ -864,14 +752,6 @@ class BazilioParser ( Parser ):
 
         def VAR(self):
             return self.getToken(BazilioParser.VAR, 0)
-
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterVariable" ):
-                listener.enterVariable(self)
-
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitVariable" ):
-                listener.exitVariable(self)
 
         def accept(self, visitor:ParseTreeVisitor):
             if hasattr( visitor, "visitVariable" ):
@@ -902,14 +782,6 @@ class BazilioParser ( Parser ):
         def MAYORIGUAL(self):
             return self.getToken(BazilioParser.MAYORIGUAL, 0)
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterRelacional" ):
-                listener.enterRelacional(self)
-
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitRelacional" ):
-                listener.exitRelacional(self)
-
         def accept(self, visitor:ParseTreeVisitor):
             if hasattr( visitor, "visitRelacional" ):
                 return visitor.visitRelacional(self)
@@ -925,14 +797,6 @@ class BazilioParser ( Parser ):
 
         def ENTERO(self):
             return self.getToken(BazilioParser.ENTERO, 0)
-
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterEntero" ):
-                listener.enterEntero(self)
-
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitEntero" ):
-                listener.exitEntero(self)
 
         def accept(self, visitor:ParseTreeVisitor):
             if hasattr( visitor, "visitEntero" ):
@@ -961,14 +825,6 @@ class BazilioParser ( Parser ):
         def MODULO(self):
             return self.getToken(BazilioParser.MODULO, 0)
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterMulDiv" ):
-                listener.enterMulDiv(self)
-
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitMulDiv" ):
-                listener.exitMulDiv(self)
-
         def accept(self, visitor:ParseTreeVisitor):
             if hasattr( visitor, "visitMulDiv" ):
                 return visitor.visitMulDiv(self)
@@ -985,14 +841,6 @@ class BazilioParser ( Parser ):
         def expr(self):
             return self.getTypedRuleContext(BazilioParser.ExprContext,0)
 
-
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterParentesis" ):
-                listener.enterParentesis(self)
-
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitParentesis" ):
-                listener.exitParentesis(self)
 
         def accept(self, visitor:ParseTreeVisitor):
             if hasattr( visitor, "visitParentesis" ):
@@ -1013,14 +861,6 @@ class BazilioParser ( Parser ):
             return self.getTypedRuleContext(BazilioParser.ExprContext,0)
 
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterLongitud" ):
-                listener.enterLongitud(self)
-
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitLongitud" ):
-                listener.exitLongitud(self)
-
         def accept(self, visitor:ParseTreeVisitor):
             if hasattr( visitor, "visitLongitud" ):
                 return visitor.visitLongitud(self)
@@ -1036,14 +876,6 @@ class BazilioParser ( Parser ):
 
         def NOTA(self):
             return self.getToken(BazilioParser.NOTA, 0)
-
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterNota" ):
-                listener.enterNota(self)
-
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitNota" ):
-                listener.exitNota(self)
 
         def accept(self, visitor:ParseTreeVisitor):
             if hasattr( visitor, "visitNota" ):
@@ -1070,14 +902,6 @@ class BazilioParser ( Parser ):
         def DISTINTO(self):
             return self.getToken(BazilioParser.DISTINTO, 0)
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterIgualdad" ):
-                listener.enterIgualdad(self)
-
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitIgualdad" ):
-                listener.exitIgualdad(self)
-
         def accept(self, visitor:ParseTreeVisitor):
             if hasattr( visitor, "visitIgualdad" ):
                 return visitor.visitIgualdad(self)
@@ -1102,14 +926,6 @@ class BazilioParser ( Parser ):
             return self.getToken(BazilioParser.MAS, 0)
         def MENOS(self):
             return self.getToken(BazilioParser.MENOS, 0)
-
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterSumaResta" ):
-                listener.enterSumaResta(self)
-
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitSumaResta" ):
-                listener.exitSumaResta(self)
 
         def accept(self, visitor:ParseTreeVisitor):
             if hasattr( visitor, "visitSumaResta" ):

@@ -58,7 +58,7 @@ MIENTRAS: 'while' ;
 // comillas rectas o tipográficas
 TEXTO   : '"' ~["\r\n]* '"' | '\u201C' ~[\u201D\r\n]* '\u201D' ;
 ENTERO  : [0-9]+ ;
-NOTA    : [A-G] [0-8]? ;                  // se valida el rango (A0..C8) al ejecutar
+NOTA    : ( [A-G] [#b]? [0-8]? | 'R' ) ( ':' [0-9]+ '.'? )? ;  // <--- LÍNEA MODIFICADA
 PROC_ID : [A-Z] [a-zA-Z0-9_]* ;           // procedimientos: empiezan con mayúscula
 VAR     : [a-z] [a-zA-Z0-9_]* ;           // variables: empiezan con minúscula
 

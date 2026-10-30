@@ -1,4 +1,5 @@
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -12,40 +13,49 @@ from BazilioParser import BazilioParser
 from BazilioVisitor import BazilioVisitor
 
 # --- Variables y utilidades musicales ---
-NOTA_MIN, NOTA_MAX = 0, 51
-_POSICION = {"C": 0, "D": 1, "E": 2, "F": 3, "G": 4, "A": 5, "B": 6}
+def nota_a_lilypond(texto):
+    """Transforma 'C#5:8.', 'Bb4', 'R:2' en sintaxis LilyPond 'cis''8.', 'bes'4', 'r2'."""
+    # Usamos una expresión regular para separar las partes del texto
+    match = re.match(r'([A-G]|R)([#b]?)([0-8]?)(?::(\d+\.?))?', str(texto))
+    if not match:
+        raise ErrorBazilio(f"Formato de nota o silencio inválido: {texto}")
 
-def valor_nota(texto):
-    letra = texto[0]
-    octava = int(texto[1]) if len(texto) == 2 else 4
-    if octava == 0:
-        if letra not in "AB":
-            raise ErrorBazilio(f"La nota {texto} no existe en el piano (la octava 0 solo tiene A0 y B0).")
-        return 0 if letra == "A" else 1
-    valor = 2 + 7 * (octava - 1) + _POSICION[letra]
-    if valor > NOTA_MAX:
-        raise ErrorBazilio(f"La nota {texto} no existe en el piano (la última es C8).")
-    return valor
+    letra, alteracion, octava_str, duracion = match.groups()
 
-def nota_a_lilypond(valor):
-    if not NOTA_MIN <= valor <= NOTA_MAX:
-        raise ErrorBazilio(f"Se intentó tocar el valor {valor}, fuera del rango del piano (0 a 51).")
-    if valor < 2:
-        letra, octava = ("a", "b")[valor], 0
+    # Si no tiene figura rítmica (ej. C5), por defecto es una negra (4)
+    if not duracion:
+        duracion = "4"
+
+    # Si es un silencio (Rest)
+    if letra == 'R':
+        return f"r{duracion}"
+
+    # Convertimos la letra base a minúscula para LilyPond
+    nota_ly = letra.lower()
+
+    # LilyPond usa 'is' para sostenidos y 'es' para bemoles
+    if alteracion == '#':
+        nota_ly += "is"
+    elif alteracion == 'b':
+        nota_ly += "es"
+
+    # Procesamos las comillas y comas para la octava
+    octava = int(octava_str) if octava_str else 4
+    if octava >= 3:
+        marcas = "'" * (octava - 3)
     else:
-        k = valor - 2
-        octava, letra = 1 + k // 7, "cdefgab"[k % 7]
-    marcas = "'" * (octava - 3) if octava > 3 else "," * (3 - octava)
-    return f"{letra}{marcas}4"
+        marcas = "," * (3 - octava)
+
+    return f"{nota_ly}{marcas}{duracion}"
 
 def texto_lilypond(partitura, tempo=120):
     notas = [nota_a_lilypond(v) for v in partitura]
     renglones = [" ".join(notas[i:i + 8]) for i in range(0, len(notas), 8)]
     cuerpo = "\n".join("      " + r for r in renglones)
-    # CORRECCIÓN: Forzamos la versión exacta para evitar el error fatal en Render
     return ('\\version "2.24.4"\n'
             "\\score {\n"
             "  \\absolute {\n"
+            "    \\set Staff.midiInstrument = \"acoustic grand\"\n"
             f"    \\tempo 4 = {tempo}\n"
             f"{cuerpo}\n"
             "  }\n"
@@ -72,7 +82,6 @@ def generar_salida(partitura, base, solo_ly=False, aviso=print):
             return False
         return True
 
-    # AQUÍ ESTÁ EL CAMBIO: Convertimos a rutas absolutas
     base_abs = os.path.abspath(base)
     ruta_ly_abs = os.path.abspath(ruta_ly)
 
@@ -174,7 +183,6 @@ class Interprete(BazilioVisitor):
     def visitReproduccion(self, ctx):
         valor = self.visit(ctx.expr())
         for nota in (valor if isinstance(valor, list) else [valor]):
-            nota_a_lilypond(nota)
             self.partitura.append(nota)
 
     def visitInvocacion(self, ctx):
@@ -255,7 +263,8 @@ class Interprete(BazilioVisitor):
         return int((a == b) if ctx.op.text == "=" else (a != b))
 
     def visitNota(self, ctx):
-        return valor_nota(ctx.getText())
+        # Ahora devolvemos la nota tal cual se escribió (ej. "Bb4:8")
+        return ctx.getText()
 
     def visitLista(self, ctx):
         elementos = [self.visit(e) for e in ctx.expr()]
@@ -272,6 +281,7 @@ class Interprete(BazilioVisitor):
     @staticmethod
     def _entero(valor):
         if isinstance(valor, list): raise ErrorBazilio("Se esperaba un entero y se encontró una lista.")
+        if isinstance(valor, str): raise ErrorBazilio("Operación matemática inválida con una nota musical.")
         return valor
 
     def _operandos(self, ctx):
